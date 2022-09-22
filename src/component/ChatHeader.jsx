@@ -3,7 +3,6 @@ import { useChat } from "../context/ChatContext";
 
 function ChatHeader({ hideNav }) {
   const { chat } = useChat();
-  const src = null;
   return (
     <div className="flex items-center border-b-[1px] border-gray-[#aaaaaa] px-4">
       {
@@ -16,9 +15,9 @@ function ChatHeader({ hideNav }) {
           </span>
           {chat && (
             <>
-              {src ? (
+              {chat?.profile ? (
                 <img
-                  src={src}
+                  src={chat?.profile}
                   alt={"profile"}
                   className="w-[36px] h-[36px] rounded-[100%]"
                 />

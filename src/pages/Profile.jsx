@@ -1,13 +1,58 @@
-import React from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase";
-
+import { auth, db, storage } from "../firebase";
 function Profile() {
   const history = useNavigate();
-  const user = {
-    profile:
-      "https://scontent.fdac24-1.fna.fbcdn.net/v/t39.30808-6/306537605_873682096932212_3887625685607784328_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=09cbfe&_nc_eui2=AeH_pKjsK9mcWF2HU-sG6SXiVmLarxXo2IxWYtqvFejYjAkBwBfXg5O2O3DqDxoYsTzmYrDPBuFtMb4OaPN97l8w&_nc_ohc=aiX7vUrKqO8AX8k86jv&_nc_ht=scontent.fdac24-1.fna&oh=00_AT8lNxAYP2eFWS1l1__2_BZfNeE6Nt0OtYh630K3hxWzpw&oe=6326ABFD",
-  };
+  const [file, setFile] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getDoc(doc(db, "users", auth.currentUser.uid)).then((docSnap) => {
+      if (docSnap.exists) {
+        setUser(docSnap.data());
+      }
+    });
+
+    if (file) {
+      async function uploadProfileImage() {
+        const imageRef = ref(
+          storage,
+          `profile/${new Date().getTime()}-${file.name}`
+        );
+        try {
+          // delete old image
+          if (user.profilePath) {
+            await deleteObject(ref(storage, user.profilePath));
+          }
+
+          setLoading(true);
+          // upload imag
+          const snap = await uploadBytes(imageRef, file);
+          const url = await getDownloadURL(ref(storage, snap.ref.fullPath));
+
+          await updateDoc(doc(db, "users", auth.currentUser.uid), {
+            profile: url,
+            profilePath: snap.ref.fullPath,
+          });
+
+          setLoading(false);
+          setFile("");
+        } catch (err) {
+          console.log(err.message);
+        }
+      }
+      uploadProfileImage();
+    }
+  }, [file]);
+
   return (
     <div className="h-screen w-full bg-[#f6f6f6] dark:bg-gray-900 flex items-center justify-center">
       <div className="container mx-auto">
@@ -21,13 +66,21 @@ function Profile() {
           </button>
           <div className="relative w-[120px] h-[120px] mx-auto rounded-[50%] shadow-lg mb-3">
             {user ? (
-              <img
-                src={user.profile}
-                alt={user.name}
-                className="select-none object-fill w-[120px] h-[120px] rounded-[50%]"
-              />
+              loading ? (
+                <h6 className="grid place-items-center text-center h-[100%] dark:text-[#aaa]">
+                  loading...
+                </h6>
+              ) : (
+                <img
+                  src={user?.profile}
+                  alt={user?.name}
+                  className="select-none object-fill w-[120px] h-[120px] rounded-[50%]"
+                />
+              )
             ) : (
-              <i className="fa-solid fa-circle-user w-full text-3xl"></i>
+              <span className="w-full h-[100%] flex items-center justify-center">
+                <i className="fa-solid fa-circle-user w-full text-[6rem] text-center"></i>
+              </span>
             )}
 
             <label
@@ -36,7 +89,13 @@ function Profile() {
             >
               <i className="fa-solid fa-camera text-xs z-10"></i>
             </label>
-            <input type="file" name="prfile" id="profile" className="hidden" />
+            <input
+              type="file"
+              name="prfile"
+              id="profile"
+              className="hidden"
+              onChange={(e) => setFile(e.target.files[0])}
+            />
           </div>
           <h1 className="text-2xl text-center font-bold text-gray-800 dark:text-gray-50">
             <i className="fa-solid fa-user mr-2 select-none"></i>

@@ -1,14 +1,20 @@
-import { doc, updateDoc } from "firebase/firestore";
-import React from "react";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { auth, db } from "../firebase";
 
 function Profile() {
-  const src =
-    "https://image.shutterstock.com/image-photo/stock-photo-head-shot-young-attractive-businessman-in-glasses-standing-in-modern-office-pose-for-camera-250nw-1854697390.jpg";
+  const [logedInUser, setlogedInUser] = useState(null);
   const navigate = useNavigate();
   const { logout, currentUser } = useAuth();
+  useEffect(() => {
+    getDoc(doc(db, "users", auth.currentUser.uid)).then((docSnap) => {
+      if (docSnap) {
+        setlogedInUser(docSnap.data());
+      }
+    });
+  }, []);
 
   async function logOut() {
     await updateDoc(doc(db, "users", auth.currentUser.uid), {
@@ -21,9 +27,9 @@ function Profile() {
   return (
     <div className="border-b-[1px] border-gray-400 dark:bg-gray-700 shadow-sm p-3 flex items-center justify-between">
       <Link to="/profile" className="flex items-center" title="Profile">
-        {src ? (
+        {logedInUser ? (
           <img
-            src={src}
+            src={logedInUser.profile}
             alt={"profile"}
             className="w-[40px] h-[40px] rounded-[100%]"
           />
