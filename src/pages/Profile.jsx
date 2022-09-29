@@ -8,6 +8,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth, db, storage } from "../firebase";
+
 function Profile() {
   const history = useNavigate();
   const [file, setFile] = useState("");

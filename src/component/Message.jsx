@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useChat } from "../context/ChatContext";
 import { auth } from "../firebase";
+import moment from "moment";
 
 function Message() {
   const scrollRef = useRef();
@@ -31,7 +32,7 @@ function Message() {
                 }`}
               >
                 <span className="text-sm inline-block text-center text-gray-500 dark:text-gray-300">
-                  {/* {msg.createdAt} */}
+                  {moment(msg.createdAt.toDate()).format("ddd MMM yyy h:ma")}
                 </span>
                 {msg.media && (
                   <span className="flex items-center">

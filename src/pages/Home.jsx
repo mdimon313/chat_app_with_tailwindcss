@@ -2,6 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 function Home() {
+  const signInWithGoogle = () => {
+    return alert("currently not available...!");
+  };
   return (
     <div className="bg-gray-200 dark:bg-gray-900 h-screen flex items-center justify-center">
       <header className="p-5 w-[300px]">
@@ -20,7 +23,10 @@ function Home() {
         <span className="block my-3 text-center text-[#aaaaaa] select-none pointer-events-none">
           or
         </span>
-        <button className="cursor-pointer block text-gray-50 text-lg font-semibold mt-4 w-full rounded-md text-center py-2 bg-blue-500 hover:bg-blue-600 transition-all ">
+        <button
+          onClick={signInWithGoogle}
+          className="cursor-pointer block text-gray-50 text-lg font-semibold mt-4 w-full rounded-md text-center py-2 bg-blue-500 hover:bg-blue-600 transition-all "
+        >
           Login with google
         </button>
       </header>
