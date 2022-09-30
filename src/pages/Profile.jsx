@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import {
   deleteObject,
