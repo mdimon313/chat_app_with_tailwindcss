@@ -61,7 +61,7 @@ function Message() {
           );
         })
       ) : (
-        <div className="h-[100%] flex items-center justify-center text-gray-500 text-3xl font-bold">
+        <div className="h-[100%] flex items-center justify-center text-gray-500 text-3xl font-bold select-none">
           No message available...
         </div>
       )}

@@ -21,7 +21,9 @@ function ChatBox({ hideNav }) {
         </>
       ) : (
         <div className="h-[100%] flex items-center justify-center">
-          <h2 className="text-gray-500 text-3xl font-bold">Select user</h2>
+          <h2 className="text-gray-500 text-3xl font-bold select-none">
+            Select user
+          </h2>
         </div>
       )}
     </div>

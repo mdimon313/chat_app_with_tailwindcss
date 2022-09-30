@@ -31,7 +31,7 @@ function Profile() {
           <img
             src={logedInUser.profile}
             alt={"profile"}
-            className="w-[40px] h-[40px] rounded-[100%]"
+            className="w-[40px] h-[40px] rounded-[100%] object-cover"
           />
         ) : (
           <i className="fa-regular fa-circle-user text-2xl cursor-pointer select-none"></i>

@@ -12,6 +12,7 @@ import Signup from "./pages/Signup";
 
 function App() {
   const [theme, setTheme] = useState(localStorage.theme);
+
   useEffect(() => {
     const body = document.querySelector("body");
 
@@ -22,6 +23,7 @@ function App() {
     }
   }, [theme]);
   function switchTheme() {
+    // localStorage.setItem("theme", "light");
     if (localStorage.getItem("theme") === "light") {
       setTheme(localStorage.setItem("theme", "dark"));
       const currentTheme = localStorage.getItem("theme");
@@ -43,7 +45,7 @@ function App() {
         >
           <i
             className={
-              theme === "light" ? "fa-solid fa-moon" : "fa-solid fa-sun"
+              theme !== "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun"
             }
           ></i>
         </button>

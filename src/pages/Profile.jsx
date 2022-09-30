@@ -55,9 +55,9 @@ function Profile() {
   }, [file]);
 
   return (
-    <div className="h-screen w-full bg-[#f6f6f6] dark:bg-gray-900 flex items-center justify-center">
+    <div className="h-screen w-full bg-[#ddd] dark:bg-gray-900 flex items-center justify-center">
       <div className="container mx-auto">
-        <div className="mx-2 md:w-1/2 md:mx-auto border border-[#aaaaaa] bg-slate-200 dark:bg-gray-700 rounded-md p-4 transition-all">
+        <div className="mx-2 md:w-1/2 md:mx-auto border border-[#aaaaaab2] bg-gray-300 dark:bg-gray-700 rounded-md p-4 transition-all">
           <button
             type="button"
             onClick={() => history(-1)}
@@ -75,7 +75,7 @@ function Profile() {
                 <img
                   src={user?.profile}
                   alt={user?.name}
-                  className="select-none object-fill w-[120px] h-[120px] rounded-[50%]"
+                  className="select-none object-cover w-[120px] h-[120px] rounded-[50%]"
                 />
               )
             ) : (
